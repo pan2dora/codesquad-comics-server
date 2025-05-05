@@ -1,0 +1,28 @@
+{
+  "name": "codesquad-comics-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pan2dora/codesquad-comics-server.git"
+  },
+  "author": "Pandora Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pan2dora/codesquad-comics-server/issues"
+  },
+  "homepage": "https://github.com/pan2dora/codesquad-comics-server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "save-dev": "^0.0.1-security"
+  }
+}
