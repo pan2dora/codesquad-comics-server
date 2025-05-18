@@ -1,12 +1,12 @@
 // Require the following dependencies: express
 const express = require("express");
-
+const bookRoutes = require("./routes/bookRoutes.js")
 
 // Require the following dependencies: morgan, helmet and cors
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const bookRoutes = require("./routes/bookRoutes.js")
+
 // Note: Order of where this goes is important!!
 // Create a const variable called app with the value of express()
 const app = express();
@@ -17,9 +17,6 @@ const PORT = 3000;
 app.use(morgan("combined"));
 app.use(helmet());
 app.use(cors());
-
-app.use("/api/books", bookRoutes)
-// Require the following module after the dependencies: path
 const path = require("node:path");
 // # ADD more middleware to app.js before the routes
 
@@ -28,6 +25,9 @@ app.use(express.static(path.join(__dirname + "/public")));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
+app.use("/api/books", bookRoutes)
+// Require the following module after the dependencies: path
+
 // Create six basic GET routes with the following information using the .send() method and the request/response/next parameter:
 // PATH: /, HANDLER: "This route points to the Home page
 
