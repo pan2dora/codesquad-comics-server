@@ -21,9 +21,9 @@ const getAllBooks = (req, res, next) => {
 
 const getBook = (req, res, next) => {
   //Retrieve the _id from the params objects on the request (req)
-  const { _id } = req.params;
+  const { id } = req.params;
   try {
-    const book = booksData.find((book) => book._id === _id);
+    const book = booksData.find((book) => book._id === id);
     return res.status(200).json({
       success: {
         message: "Book Found",

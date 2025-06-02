@@ -6,7 +6,8 @@ const authRoutes = require("./routes/authRoutes");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-
+const methodOverride = require("method-override")
+app.use(methodOverride('_method'));
 // Note: Order of where this goes is important!!
 // Create a const variable called app with the value of express()
 const app = express();
@@ -17,7 +18,7 @@ const PORT = 3000;
 app.use(morgan("combined"));
 app.use(helmet());
 app.use(cors());
-
+app.use(methodOverride('_method'));
 const path = require("node:path");
 // # ADD more middleware to app.js before the routes
 
