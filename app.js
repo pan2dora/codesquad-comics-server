@@ -12,7 +12,7 @@ const cors = require("cors");
 const methodOverride = require("method-override");
 const bookRoutes = require("./routes/bookRoutes.js");
 const authRoutes = require("./routes/authRoutes");
-app.use(methodOverride("_method"));
+
 // Note: Order of where this goes is important!!
 // Create a const variable called app with the value of express()
 const app = express();
@@ -20,7 +20,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Use these packages as a middleware for this project - helmet, morgan (combined or dev), cors
-
+app.use(methodOverride("_method"));
 app.use(helmet());
 app.use(cors({ credentials: true, origin: true }));
 app.use(morgan("combined"));
@@ -62,5 +62,5 @@ app.get("/", (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`This server is listening on http://localhost/${PORT}`);
+  console.log(`This server is listening on http://localhost:${PORT}`);
 });

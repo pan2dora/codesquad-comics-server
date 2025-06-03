@@ -1,9 +1,12 @@
-const booksData = require("../data/books.js");
+const Book = require("../models/bookModel");
+
+// const booksData = require("../data/books.js");
 
 // Create a new arrow function named getAllBooks
-const getAllBooks = (req, res, next) => {
+const getAllBooks = async (req, res, next) => {
   try {
-    const books = booksData;
+    const books = await Book.find({});
+
     return res.status(200).json({
       success: {
         message: "Books Found",
@@ -12,18 +15,24 @@ const getAllBooks = (req, res, next) => {
       statusCode: 200,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: { message: "Not found" },
-      statusCode: 400,
-    });
+    return next(error);
+    //   return res.status(400).json({
+    //     error: { message: "Not found" },
+    //     statusCode: 400,
+    //   });
   }
 };
 
-const getBook = (req, res, next) => {
+const getBook = async (req, res, next) => {
   //Retrieve the _id from the params objects on the request (req)
+
+  if (!_id) {
+    throw new Error("Id is required");
+  }
+
   const { id } = req.params;
   try {
-    const book = booksData.find((book) => book._id === id);
+    // const book = booksData.find((book) => book._id === id);
     return res.status(200).json({
       success: {
         message: "Book Found",
@@ -39,16 +48,19 @@ const getBook = (req, res, next) => {
 };
 
 const createBook = async (req, res, next) => {
-    
   // destructure
   const { title, author, publisher, genre, pages, rating, synopsis, imageUrl } =
     req.body;
 
-console.log("BODY RECEIVED:", req.body);
- 
+  console.log("BODY RECEIVED:", req.body);
+  //value check
 
   try {
-       const newBook = {
+    if (!title || !author || !pages) {
+      throw new Error("Missing required fields");
+    }
+
+    const newBook = {
       title,
       author,
       publisher,
@@ -58,10 +70,9 @@ console.log("BODY RECEIVED:", req.body);
       synopsis,
       imageUrl,
     };
-    
-    //Wouldn't work with postman the way the hw described but found this way in slides
-  
 
+    //push new entries from bookIventory and await newBook, save using save method
+    await newBook.save();
     return res.status(201).json({
       success: { message: "New book created!" },
       data: { newBook },
@@ -73,45 +84,63 @@ console.log("BODY RECEIVED:", req.body);
   }
 };
 
-const updateBook = (req, res, next) => {
+const updateBook = async (req, res, next) => {
   const { title, author, publisher, genre, pages, rating, synopsis, imageUrl } =
     req.body;
   const { _id } = req.params;
   try {
-    const updatedBook = {
-      title,
-      author,
-      publisher,
-      genre,
-      pages,
-      rating,
-      synopsis,
-      imageUrl,
-    };
+    if (!title || !author || !pages) {
+      throw new Error("Missing required fields");
+    }
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          title,
+          author,
+          publisher,
+          genre,
+          pages,
+          rating,
+          synopsis,
+          imageUrl,
+        },
+      },
+      { new: true }
+    );
+
+    //update book check
+    if (!updateBook) {
+      throw new Error("Book not found");
+    }
+
     return res.status(201).json({
       success: { message: "Book updated!" },
-      date: { updatedBook },
+      data: { updatedBook },
+      statusCode: 201,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: { message: "Book not updated!" },
-    });
+    return next(error);
   }
 };
 
-const deleteBook = (req, res, next) => {
+const deleteBook = async (req, res, next) => {
   const { _id } = req.params;
 
   try {
-    const books = booksData.filter((book) => book._id !== _id);
+    if (!_id) {
+      throw new Error("Id is required");
+    }
+    // const books = booksData.filter((book) => book._id !== _id);
+    await Book.findByIdAndDelete(_id);
+
     return res.status(200).json({
       success: { message: "Book deleted!" },
       data: { books },
     });
   } catch (error) {
-    return res.status(400).json({
-      error: { message: "Books not deleted!" },
-    });
+    return next(error);
   }
 };
 
