@@ -16,34 +16,32 @@ const getAllBooks = async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
-    //   return res.status(400).json({
-    //     error: { message: "Not found" },
-    //     statusCode: 400,
-    //   });
   }
 };
 
 const getBook = async (req, res, next) => {
   //Retrieve the _id from the params objects on the request (req)
-
-  if (!_id) {
-    throw new Error("Id is required");
-  }
-
   const { id } = req.params;
+
   try {
+    if (!_id) {
+      throw new Error("Id is required");
+    }
+    const book = Book.findById(_id);
+
+    if (!book) {
+      throw new Error("Book not found");
+    }
+
     // const book = booksData.find((book) => book._id === id);
     return res.status(200).json({
       success: {
         message: "Book Found",
       },
       data: { book },
-      statusCode: 200,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: { message: "Book not found" },
-    });
+    return next(error);
   }
 };
 
@@ -76,11 +74,10 @@ const createBook = async (req, res, next) => {
     return res.status(201).json({
       success: { message: "New book created!" },
       data: { newBook },
+      statusCode: 201,
     });
   } catch (error) {
-    return res.status(400).json({
-      error: { message: "Book not created" },
-    });
+    return next(error);
   }
 };
 
@@ -137,7 +134,7 @@ const deleteBook = async (req, res, next) => {
 
     return res.status(200).json({
       success: { message: "Book deleted!" },
-      data: { books },
+      statusCode: 200,
     });
   } catch (error) {
     return next(error);

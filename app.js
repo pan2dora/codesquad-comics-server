@@ -4,7 +4,7 @@ require("./config/authStrategy.js"); //auth
 
 // Require the following dependencies: express
 const express = require("express");
-
+const app = express();
 // Require the following dependencies: morgan, helmet and cors
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -15,15 +15,17 @@ const authRoutes = require("./routes/authRoutes");
 
 // Note: Order of where this goes is important!!
 // Create a const variable called app with the value of express()
-const app = express();
+
 // Create a const variable called PORT with the value of 8080
 const PORT = process.env.PORT || 8080;
 
 // Use these packages as a middleware for this project - helmet, morgan (combined or dev), cors
 app.use(methodOverride("_method"));
 app.use(helmet());
-app.use(cors({ credentials: true, origin: true }));
+
+
 app.use(morgan("combined"));
+app.use(cors({ credentials: true, origin: true }));
 // app.use(methodOverride("_method"));
 const path = require("node:path");
 // # ADD more middleware to app.js before the routes
