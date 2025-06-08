@@ -19,18 +19,16 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true,
   },
-  password:{
-    type: String, 
+  password: {
+    type: String,
     required: true,
     minLength: 8,
   },
-  googleId:{
-    type: String, 
-
+  googleId: {
+    type: String,
   },
-  githubId:{
-    type: String, 
-
+  githubId: {
+    type: String,
   },
 });
 
