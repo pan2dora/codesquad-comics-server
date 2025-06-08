@@ -1,7 +1,21 @@
+const User = require("../models/userModel");
+const bcrypt = require("bcrypt");
 const register = async (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;
   console.log("This works", req.body);
   try {
+
+const saltRounds = 10;
+const hashPassword = await bcrypt.hash(password, saltRounds)
+
+ const newUser = {
+    firstName:firstName,
+    lastName: lastName,
+    username: username,
+    password: hashedPassword,
+  };
+
+
     return res.status(201).json({
       success: { message: "New User Created!" },
       data: { newUser },

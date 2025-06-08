@@ -5,6 +5,9 @@ require("./config/authStrategy.js"); //auth
 // Require the following dependencies: express
 const express = require("express");
 const app = express();
+
+const session = require("express-session")
+const passport = require("passport")
 // Require the following dependencies: morgan, helmet and cors
 const morgan = require("morgan");
 const helmet = require("helmet");
