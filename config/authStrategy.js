@@ -1,16 +1,18 @@
 const passport = require("passport");
 const bcrypt = require("bcrypt");
-const LocalStrategy = require("passport-local");
-const GoogleStrategy = require("passport-google-oauth0").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GithubStrategy = require('passport-github').Strategy;
+// const GithubStrategy = require("passport-github").Strategy;
 const User = require("../models/userModel");
 
 passport.use(
-  new LocalStrategy(async (usernam, password, done) => {
+  new LocalStrategy(async (username, password, done) => {
     try {
       const user = await User.findOne({ username });
       if (!user) {
         return done(null, false, {
-          message: "Incorrect user name or passwordx",
+          message: "Incorrect user name or password",
         });
       }
       const result = await bcrypt.compare(password, user.password);

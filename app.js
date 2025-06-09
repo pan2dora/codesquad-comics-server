@@ -30,16 +30,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname + "/public")));
 
-//content routes
-app.use("/api/books", bookRoutes);
-app.use("/auth", authRoutes);
+
 // Require the following module after the dependencies: path
 
 app.use(
   session({
     resave: false,
     saveUninitialized: false,
-    secret: process.env.SECRECT_KEY,
+    secret: process.env.SECRET_KEY,
 
     cookie: {
       httpOnly: true,
@@ -51,6 +49,11 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//content routes
+app.use("/api/books", bookRoutes);
+app.use("/auth", authRoutes);
+
 
 //Error handling middleware
 app.use((err, req, res, next) => {

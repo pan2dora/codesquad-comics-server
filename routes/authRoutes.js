@@ -14,12 +14,13 @@ router.get("/login", login);
 router.get("/login/error", (req, res, next) => {
   return res.json("Login Error!");
 });
-router.get("/logout", logout);
+
 router.get("/login/local", localLogin);
-
+router.get("/logout", logout);
 //Auth
-router.get("login/google", { scope: ["profile", "email"] });
-
+router.get("/login/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+);
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -55,7 +56,7 @@ router.get("/admin", checkAuthentication, (req, res, next) => {
     res.redirect("/unauthenticated");
   }
 });
-route.get("/admin/auth-console", (req,res,next)=>{
+router.get("/admin/auth-console", (req,res,next)=>{
   res.json("The user is authenticated within the auth console")
 })
 
@@ -66,3 +67,4 @@ router.get("/unauthenticated", (req, res, next) => {
 });
 
 module.exports = router;
+
