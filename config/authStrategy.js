@@ -6,8 +6,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 // const GithubStrategy = require("passport-github").Strategy;
 const User = require("../models/userModel");
 
-
-
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
@@ -72,5 +70,3 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
-
-module.exports = { signupRequest };
