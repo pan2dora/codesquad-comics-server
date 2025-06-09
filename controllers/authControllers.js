@@ -1,19 +1,26 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+
+
+
 const register = async (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;
   console.log("This works", req.body);
   try {
+    const saltRounds = 10;
+    const hashPassword = await bcrypt.hash(password, saltRounds);
 
-const saltRounds = 10;
-const hashPassword = await bcrypt.hash(password, saltRounds)
+    const newUser = {
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      password: hashedPassword,
+      googleId: googleId,
+      // githubId: githubId
+    };
 
- const newUser = {
-    firstName:firstName,
-    lastName: lastName,
-    username: username,
-    password: hashedPassword,
-  };
+    await newUser.save();
 
 
     return res.status(201).json({
@@ -58,20 +65,30 @@ const logout = async (req, res, next) => {
 };
 
 const localLogin = async (req, res, next) => {
-  let result = true;
-  function mockPassport(err, user) {
+  // let result = true;
+  passport.authentication("local", (err, user, info) => {
     //error handling as a final check and a failsafe
     if (err) {
       return next(err);
     }
-  }
-  //call the mockPassport feature
-  mockPassport();
-
-  response.status(200).json({
-    success: { message: "Login Successful" },
-    data: { result },
+    if (!user) {
+      return res.status(401).json({
+        error: { message: "There is not a user detected. Please try again" },
+      });
+    }
+    req.login(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+    });
   });
 };
+//call the mockPassport feature
+
+//   response.status(200).json({
+//     success: { message: "Login Successful" },
+//     data: { result },
+//   });
+// };
 
 module.exports = { register, login, logout, localLogin };
