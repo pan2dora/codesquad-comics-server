@@ -1,6 +1,6 @@
-const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const User = require("../models/userModel");
 
 const register = async (req, res, next) => {
   const { firstName, lastName, username, password } = req.body;
@@ -108,8 +108,10 @@ const logout = async (req, res, next) => {
 
 const localLogin = async (req, res, next) => {
   // let result = true;
-  passport.authentication("local", (err, user, info) => {
+
+  passport.authenticate("local", (err, user, info) => {
     //error handling as a final check and a failsafe
+
     if (err) {
       return next(err);
     }
@@ -118,19 +120,23 @@ const localLogin = async (req, res, next) => {
         error: { message: "There is not a user detected. Please try again" },
       });
     }
+
     req.login(user, (err) => {
       if (err) {
         return next(err);
       }
-    });
-  });
-};
-//call the mockPassport feature
 
-//   response.status(200).json({
-//     success: { message: "Login Successful" },
-//     data: { result },
-//   });
-// };
+      const userCopy = { ...req.user._doc };
+      userCopy.password = undefined;
+    
+
+    res.status(200).json({
+      success: { message: "Login Successful" },
+      // data: { user:userCopy },
+    });
+  }); 
+})
+}
+//call the mockPassport feature
 
 module.exports = { register, login, logout, localLogin };

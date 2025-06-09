@@ -2,9 +2,11 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GithubStrategy = require('passport-github').Strategy;
+
 // const GithubStrategy = require("passport-github").Strategy;
 const User = require("../models/userModel");
+
+
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -36,7 +38,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:3000/auth/google/callback",
     },
-    async (accessToken, refreshToken, Profiler, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       try {
         const user = await User.findOne({ googleId: profile.id });
         if (user) {
@@ -70,3 +72,5 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
+
+module.exports = { signupRequest };

@@ -90,31 +90,12 @@ const updateBook = async (req, res, next) => {
       throw new Error("Missing required fields");
     }
 
-    const updatedBook = await Book.findByIdAndUpdate(
-      _id,
-      {
-        $set: {
-          title,
-          author,
-          publisher,
-          genre,
-          pages,
-          rating,
-          synopsis,
-          imageUrl,
-        },
-      },
-      { new: true }
-    );
-
-    //update book check
-    if (!updateBook) {
-      throw new Error("Book not found");
-    }
+    // 
+    const book = await Book.findById(_id)
 
     return res.status(201).json({
       success: { message: "Book updated!" },
-      data: { updatedBook },
+      data: { book },
       statusCode: 201,
     });
   } catch (error) {
@@ -130,7 +111,7 @@ const deleteBook = async (req, res, next) => {
       throw new Error("Id is required");
     }
     // const books = booksData.filter((book) => book._id !== _id);
-    await Book.findByIdAndDelete(_id);
+    // await Book.findByIdAndDelete(_id);
 
     return res.status(200).json({
       success: { message: "Book deleted!" },

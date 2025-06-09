@@ -10,7 +10,11 @@ const {
 } = require("../controllers/authControllers");
 
 router.post("/register", register);
-router.get("/login", login);
+// router.get("/login", login);
+router.post("/login", passport.authenticate("local", {
+  failureRedirect: "/login/error",
+  failureMessage: true,
+}), login)
 router.get("/login/error", (req, res, next) => {
   return res.json("Login Error!");
 });
